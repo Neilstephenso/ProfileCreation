@@ -36,8 +36,12 @@ public class Password {
 	}
 	
 	
-	public void encrypt(String passw) {
-		
+	public String encrypt() {
+		String str = new String();
+		for (int i = 0; i < this.getPass().length(); i++) {
+			str += "*";
+		}
+		return str;
 	}
 
 }

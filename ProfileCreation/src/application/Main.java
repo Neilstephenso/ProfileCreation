@@ -38,12 +38,26 @@ public class Main extends Application {
 			grid.add(lbl1, 0, 1);
 			grid.add(userField, 1, 0);
 			grid.add(passField, 1, 1);
+			grid.add(submit, 1, 2);
+			
+			
+			GridPane grid2 = new GridPane();
+			
+			
+			BorderPane root1 = new BorderPane(grid2);
+			scene1 = new Scene(root1, 500, 500);
+			
+			
 			
 			submit.setOnAction(e -> {
 				pass = new Password(passField.getText(), passField.getText().length());
 				profile = new Profile(userField.getText(), pass);
+				grid2.add(new Label(profile.getUsername()), 0, 0);
+				grid2.add(new Label(profile.getPassword().encrypt()), 0, 1);
+				
 				window.setScene(scene1);
 			});
+			
 			
 			
 			BorderPane root = new BorderPane(grid);
