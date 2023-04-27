@@ -8,6 +8,12 @@ public class Profile {
 	public Password pass;
 	public BufferedImage img;
 	
+	
+	Profile(String username1, Password passw){
+		username = username1;
+		pass = new Password(passw);
+	}
+	
 	Profile(String username1, Password passw, BufferedImage img1){
 		username = username1;
 		pass = new Password(passw);

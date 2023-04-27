@@ -3,6 +3,7 @@ package application;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -11,23 +12,38 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 
+
+
 public class Main extends Application {
+	
+	
+	Password pass;
+	Stage window;
+	Scene scene1;
+	Profile profile;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
+			window = primaryStage;
 			GridPane grid = new GridPane();
 			
 			Label lbl = new Label("Enter a username: ");
 			Label lbl1 = new Label("Enter a password: ");
 			TextField userField = new TextField();
 			TextField passField = new TextField();
+			Button submit = new Button("Submit");
 			
 			grid.add(lbl, 0, 0);
 			grid.add(lbl1, 0, 1);
 			grid.add(userField, 1, 0);
 			grid.add(passField, 1, 1);
 			
-			
+			submit.setOnAction(e -> {
+				pass = new Password(passField.getText(), passField.getText().length());
+				profile = new Profile(userField.getText(), pass);
+				window.setScene(scene1);
+			});
 			
 			
 			BorderPane root = new BorderPane(grid);
