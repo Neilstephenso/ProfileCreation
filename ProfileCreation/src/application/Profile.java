@@ -1,45 +1,44 @@
 package application;
 
-import java.awt.image.BufferedImage;
+import javafx.beans.property.SimpleStringProperty;
 
 public class Profile {
 	
-	public String username = "";
-	public Password pass;
-	public BufferedImage img;
+	private final SimpleStringProperty username;
+	private final SimpleStringProperty pWord;
+	private final SimpleStringProperty email;
 	
 	
-	Profile(String username1, Password passw){
-		username = username1;
-		pass = new Password(passw);
+
+	public Profile(String userName1, String nEmail, String passw) {
+		username = new SimpleStringProperty(userName1);
+		pWord = new SimpleStringProperty(passw);
+		email = new SimpleStringProperty(nEmail);
 	}
-	
-	Profile(String username1, Password passw, BufferedImage img1){
-		username = username1;
-		pass = new Password(passw);
-	}
-	
+
+
+
 	public String getUsername() {
-		return username;
+		return username.get();
 	}
 	
 	public void setUsername(String username1) {
-		username = username1;
+		username.set(username1);
 	}
 	
-	public Password getPassword() {
-		return pass;
+	public String getPassword() {
+		return pWord.get();
 	}
 	
-	public void setPassword(Password passw) {
-		pass = passw;
+	public void setPassword(String passw) {
+		pWord.set(passw);
 	}
 	
-	public BufferedImage getImage() {
-		return img;
+	public String getEmail() {
+		return email.get();
 	}
 	
-	public void setImage(BufferedImage img1) {
-		img = img1;
+	public void setEmail(String nEmail) {
+		email.set(nEmail);
 	}
 }

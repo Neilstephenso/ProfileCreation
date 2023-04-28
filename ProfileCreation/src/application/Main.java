@@ -1,15 +1,21 @@
 package application;
 	
 import javafx.application.Application;
-import javafx.stage.Stage;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.geometry.Insets;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 
 
@@ -21,7 +27,11 @@ public class Main extends Application {
 	Stage window;
 	Scene scene1;
 	Profile profile;
+	TableView table = new TableView();
+	@SuppressWarnings("unchecked")
+	ObservableList<Object> profileList = FXCollections.observableArrayList();
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -30,30 +40,49 @@ public class Main extends Application {
 			
 			Label lbl = new Label("Enter a username: ");
 			Label lbl1 = new Label("Enter a password: ");
+			Label lbl2 = new Label("Enter your email: ");
 			TextField userField = new TextField();
 			TextField passField = new TextField();
+			TextField eField = new TextField();
 			Button submit = new Button("Submit");
 			
 			grid.add(lbl, 0, 0);
 			grid.add(lbl1, 0, 1);
+			grid.add(lbl2, 0,2);
 			grid.add(userField, 1, 0);
 			grid.add(passField, 1, 1);
-			grid.add(submit, 1, 2);
+			grid.add(eField, 1, 2);
+			grid.add(submit, 1, 3);
 			
 			
-			GridPane grid2 = new GridPane();
+			scene1 = new Scene(new Group());
+			Label label = new Label("Profiles");
+			TableColumn fName = new TableColumn("First Name");
+			fName.setMinWidth(100);
+			fName.setCellValueFactory(new PropertyValueFactory<Profile, String>("username"));
+			TableColumn email = new TableColumn("Email");
+			email.setMinWidth(100);
+			email.setCellValueFactory(new PropertyValueFactory<Profile, String>("email"));
 			
+			TableColumn pWord = new TableColumn("Password");
+			pWord.setMinWidth(100);
+			VBox vbox = new VBox();
+			vbox.setSpacing(5);
+			vbox.setPadding(new Insets(10, 0, 0, 10));
+			vbox.getChildren().addAll(label, table);
+			((Group) scene1.getRoot()).getChildren().add(vbox);
 			
-			BorderPane root1 = new BorderPane(grid2);
-			scene1 = new Scene(root1, 500, 500);
+			table.getColumns().addAll(fName, email, pWord);
+			
 			
 			
 			
 			submit.setOnAction(e -> {
-				pass = new Password(passField.getText(), passField.getText().length());
-				profile = new Profile(userField.getText(), pass);
-				grid2.add(new Label(profile.getUsername()), 0, 0);
-				grid2.add(new Label(profile.getPassword().encrypt()), 0, 1);
+				profile = new Profile(userField.getText(), eField.getText(), passField.getText());
+				profileList.add(profile);
+				table.setItems(profileList);
+				primaryStage.setWidth(500);
+				primaryStage.setHeight(500);
 				
 				window.setScene(scene1);
 			});
