@@ -1,5 +1,8 @@
 package application;
 
+import java.io.File;
+import java.io.PrintWriter;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -24,6 +27,7 @@ public class Main extends Application {
 	Stage window;
 	Scene scene1;
 	Profile profile;
+	int numProfile = 0;
 	TableView table = new TableView();
 	@SuppressWarnings("unchecked")
 	ObservableList<Object> profileList = FXCollections.observableArrayList();
@@ -64,6 +68,7 @@ public class Main extends Application {
 
 			TableColumn pWord = new TableColumn("Password");
 			pWord.setMinWidth(100);
+			pWord.setCellValueFactory(new PropertyValueFactory<Profile, String>("password"));
 			
 			VBox vbox = new VBox();
 			vbox.setSpacing(5);
@@ -91,6 +96,18 @@ public class Main extends Application {
 			});
 
 			save.setOnAction(e -> {
+				try { 
+					PrintWriter write = new PrintWriter("Storage");
+					for (int i = 0; i < numProfile; i ++) {
+						write.println(profile.getUsername() + ", " + profile.getEmail() + ", " + profile.getPassword());
+						System.out.println(profile.getUsername() + ", " + profile.getEmail() + ", " + profile.getPassword());
+					}
+					write.close();
+					
+					
+				} catch (Exception e2) {
+					e2.getMessage();
+				}
 
 			});
 
@@ -102,6 +119,7 @@ public class Main extends Application {
 				table.setItems(profileList);
 				primaryStage.setWidth(500);
 				primaryStage.setHeight(500);
+				numProfile++;
 
 				window.setScene(scene1);
 			});
