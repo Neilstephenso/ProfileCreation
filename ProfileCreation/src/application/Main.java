@@ -97,7 +97,10 @@ public class Main extends Application {
 
 			save.setOnAction(e -> {
 				try { 
-					PrintWriter write = new PrintWriter("Storage");
+					
+					File out = new File("storage.txt");
+					out.createNewFile();
+					PrintWriter write = new PrintWriter(out);
 					for (int i = 0; i < numProfile; i ++) {
 						write.println(profile.getUsername() + ", " + profile.getEmail() + ", " + profile.getPassword());
 						System.out.println(profile.getUsername() + ", " + profile.getEmail() + ", " + profile.getPassword());
