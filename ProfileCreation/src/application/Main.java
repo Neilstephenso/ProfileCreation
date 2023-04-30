@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.PrintWriter;
 
 import javafx.application.Application;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
@@ -48,6 +49,8 @@ public class Main extends Application {
 			Button submit = new Button("Submit");
 			Button add = new Button("Add");
 			Button save = new Button("Save");
+			Button remove = new Button("Remove");
+			TextField remField = new TextField();
 
 			grid.add(lbl, 0, 0);
 			grid.add(lbl1, 0, 1);
@@ -59,6 +62,10 @@ public class Main extends Application {
 
 			scene1 = new Scene(new Group());
 			Label label = new Label("Profiles");
+			
+			TableColumn num = new TableColumn("Number");
+			num.setMinWidth(100);
+			num.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<Number>(profileList.size()));
 			TableColumn fName = new TableColumn("First Name");
 			fName.setMinWidth(100);
 			fName.setCellValueFactory(new PropertyValueFactory<Profile, String>("username"));
@@ -74,11 +81,11 @@ public class Main extends Application {
 			vbox.setSpacing(5);
 			vbox.setPadding(new Insets(10, 0, 0, 10));
 			HBox hbox = new HBox();
-			hbox.getChildren().addAll(add, save);
+			hbox.getChildren().addAll(add, save, remove, remField);
 			vbox.getChildren().addAll(label, table, hbox);
 			((Group) scene1.getRoot()).getChildren().add(vbox);
 
-			table.getColumns().addAll(fName, email, pWord);
+			table.getColumns().addAll(num, fName, email, pWord);
 
 			add.setOnAction(e -> {
 				GridPane grid1 = new GridPane();
@@ -125,6 +132,10 @@ public class Main extends Application {
 				numProfile++;
 
 				window.setScene(scene1);
+			});
+			
+			remove.setOnAction(e -> {
+				profileList.remove(Integer.parseInt(remField.getText()) - 1);
 			});
 
 			BorderPane root = new BorderPane(grid);
