@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.Scanner;
 
 import javafx.application.Application;
 import javafx.beans.property.ReadOnlyObjectWrapper;
@@ -30,6 +31,7 @@ public class Main extends Application {
 	Profile profile;
 	int numProfile = 0;
 	TableView table = new TableView();
+	File out = new File("storage.txt");
 	@SuppressWarnings("unchecked")
 	ObservableList<Object> profileList = FXCollections.observableArrayList();
 
@@ -51,6 +53,7 @@ public class Main extends Application {
 			Button save = new Button("Save");
 			Button remove = new Button("Remove");
 			TextField remField = new TextField();
+			Button pull = new Button("pull");
 
 			grid.add(lbl, 0, 0);
 			grid.add(lbl1, 0, 1);
@@ -59,6 +62,7 @@ public class Main extends Application {
 			grid.add(passField, 1, 1);
 			grid.add(eField, 1, 2);
 			grid.add(submit, 1, 3);
+			grid.add(pull, 2, 3);
 
 			scene1 = new Scene(new Group());
 			Label label = new Label("Profiles");
@@ -96,6 +100,7 @@ public class Main extends Application {
 				grid1.add(passField, 1, 1);
 				grid1.add(eField, 1, 2);
 				grid1.add(submit, 1, 3);
+				
 
 				Scene scene2 = new Scene(grid1);
 
@@ -105,7 +110,7 @@ public class Main extends Application {
 			save.setOnAction(e -> {
 				try { 
 					
-					File out = new File("storage.txt");
+					
 					out.createNewFile();
 					PrintWriter write = new PrintWriter(out);
 					for (int i = 0; i < numProfile; i ++) {
@@ -136,6 +141,30 @@ public class Main extends Application {
 			
 			remove.setOnAction(e -> {
 				profileList.remove(Integer.parseInt(remField.getText()) - 1);
+			});
+			
+			pull.setOnAction(e -> {
+				try {
+					Scanner scan = new Scanner(out);
+					String str = "";
+					while(scan.hasNext()) {
+						str = scan.next();
+						Scanner scan1 = new Scanner(str);
+						String user1 = scan1.next();
+						String email1 = scan1.next();
+						String pass1 = scan1.next();
+						profileList.add(new Profile(user1, email1, pass1));
+						scan1.close();
+					}
+					scan.close();
+				} catch(Exception e1) {
+					e1.getMessage();
+				}
+				table.setItems(profileList);
+				primaryStage.setWidth(500);
+				primaryStage.setHeight(500);
+
+				window.setScene(scene1);
 			});
 
 			BorderPane root = new BorderPane(grid);
