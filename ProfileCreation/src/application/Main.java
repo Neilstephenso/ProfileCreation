@@ -34,7 +34,7 @@ import javafx.stage.Stage;
  * @author StephensonNeil, Blake Jordan
  * @version 4/30/23
  */
-class Main extends Application {
+public class Main extends Application {
 
 	Password pass;
 	Stage window;
@@ -88,7 +88,7 @@ class Main extends Application {
 			
 			TableColumn num = new TableColumn("Number");
 			num.setMinWidth(100);
-			num.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<Number>(numProfile));
+			num.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<Number>(profileList.size()));
 			TableColumn fName = new TableColumn("First Name");
 			fName.setMinWidth(100);
 			fName.setCellValueFactory(new PropertyValueFactory<Profile, String>("username"));
