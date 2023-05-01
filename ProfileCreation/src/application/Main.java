@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import javafx.application.Application;
@@ -21,9 +22,19 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 
-public class Main extends Application {
+/**
+ * opens window and runs program to be able to take in a username, email, and password to create an account. 
+ * the account can then be saved along with others added to a file which can be used to populate a new 
+ * table with accounts.
+ * 
+ * @author StephensonNeil, Blake Jordan
+ * @version 4/30/23
+ */
+class Main extends Application {
 
 	Password pass;
 	Stage window;
@@ -34,7 +45,15 @@ public class Main extends Application {
 	File out = new File("storage.txt");
 	@SuppressWarnings("unchecked")
 	ObservableList<Object> profileList = FXCollections.observableArrayList();
+	ArrayList<Profile> list = new ArrayList<Profile>();
 
+	
+	/**
+	 * makes the windows and takes in the information from the text boxes to create new accounts.
+	 * these accounts can be saved, removed, added to and can also be pulled from a file.
+	 * 
+	 * @param primaryStage is the primary stage to be used to show the entry fields
+	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void start(Stage primaryStage) {
@@ -62,14 +81,14 @@ public class Main extends Application {
 			grid.add(passField, 1, 1);
 			grid.add(eField, 1, 2);
 			grid.add(submit, 1, 3);
-			grid.add(pull, 2, 3);
+			grid.add(pull, 3, 3);
 
-			scene1 = new Scene(new Group());
+			scene1 = new Scene(new Group(grid));
 			Label label = new Label("Profiles");
 			
 			TableColumn num = new TableColumn("Number");
 			num.setMinWidth(100);
-			num.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<Number>(profileList.size()));
+			num.setCellValueFactory(cellData -> new ReadOnlyObjectWrapper<Number>(numProfile));
 			TableColumn fName = new TableColumn("First Name");
 			fName.setMinWidth(100);
 			fName.setCellValueFactory(new PropertyValueFactory<Profile, String>("username"));
@@ -114,8 +133,9 @@ public class Main extends Application {
 					out.createNewFile();
 					PrintWriter write = new PrintWriter(out);
 					for (int i = 0; i < numProfile; i ++) {
-						write.println(profile.getUsername() + ", " + profile.getEmail() + ", " + profile.getPassword());
-						System.out.println(profile.getUsername() + ", " + profile.getEmail() + ", " + profile.getPassword());
+						write.println(list.get(i).getUsername() + " " + list.get(i).getEmail() + " " + list.get(i).getPassword());
+						System.out.println(list.get(i).getUsername() + ", " + list.get(i).getEmail() + ", " + list.get(i).getPassword());
+						
 					}
 					write.close();
 					
@@ -130,6 +150,7 @@ public class Main extends Application {
 					profile = new Profile(userField.getText(), eField.getText(), passField.getText());
 				
 				profileList.add(profile);
+				list.add(profile);
 
 				table.setItems(profileList);
 				primaryStage.setWidth(500);
@@ -147,13 +168,15 @@ public class Main extends Application {
 				try {
 					Scanner scan = new Scanner(out);
 					String str = "";
-					while(scan.hasNext()) {
-						str = scan.next();
+					while(scan.hasNextLine()) {
+						str = scan.nextLine();
 						Scanner scan1 = new Scanner(str);
 						String user1 = scan1.next();
 						String email1 = scan1.next();
 						String pass1 = scan1.next();
-						profileList.add(new Profile(user1, email1, pass1));
+						Profile profile2 = new Profile(user1, email1, pass1);
+						profileList.add(profile2);
+						list.add(profile2);
 						scan1.close();
 					}
 					scan.close();
@@ -177,6 +200,11 @@ public class Main extends Application {
 		}
 	}
 
+	
+	/**
+	 * runs the program
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		launch(args);
 	}// does this work

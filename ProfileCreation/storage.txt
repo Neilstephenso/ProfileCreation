@@ -1,1 +1,2 @@
-user, email, pass
+user1 email@email.com pass1
+user2 email2@email.com pass2
